@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The two functions below can save a lot of processing time and 
+## computational resource. The caching is very useful in a loop because 
+## can saves a lot of time in the calculation. The solution of this 
+## ProgrammingAssignment2, is based on the example of Caching The Mean of
+## a vector, with some adjust for matrices and their inverse.
 
-## Write a short comment describing this function
+## The function makeCacheMatrix returns a list containing four functions to
+## get and set matrices and their inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  ## x must to be a square and invertible matrix.
+  i <- NULL
+  set <- function(y){
+    x <<- y
+    i <<- NULL
+  }
+  get <- function () x
+  setInverse <- function (inverse) i <<- inverse
+  getInverse <- function() i
+  list(set = set, get=get, setInverse = setInverse, getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
-
+## The function cacheSolve returns the inverse of the matrix x using 
+## the caching.
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+
+  i <- x$getInverse()
+  if(!is.null(i)){
+    message("Getting cached data!")
+    return (i)
+  }
+  data <- x$get()
+  i <- solve(data, ...)
+  x$setInverse(i)
+  i
 }
